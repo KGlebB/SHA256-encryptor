@@ -4,6 +4,6 @@
 int main()
 {
 	SHA256Encoder encoder;
-    std::setlocale(LC_ALL, "C");
-    std::cout << encoder.encode("hello world") << std::endl;
+    std::string message{ "hello world" };
+    std::cout << encoder.encode(message) << std::endl;
 }

@@ -28,7 +28,6 @@ std::string SHA256Encoder::encode(const std::string& message)
 	const auto bits{ getBitsFromMessage(message) };
     const auto hash{ getHash(bits) };
 	const auto result{ getMessageFromBits(hash) };
-    std::cout << getMessageFromBits(hash) << std::endl;
     return result;
 }
 
@@ -63,22 +62,6 @@ std::string SHA256Encoder::getMessageFromBits(const BitsVector& bits)
     return hexString.str();
 }
 
-SHA256Encoder::BitsVector SHA256Encoder::getPadded(const BitsVector& bits)
-{
-    uint64_t originalLength{ bits.size() };
-    auto paddedBits{ bits };
-	paddedBits.push_back(1);
-	size_t k{ getK(originalLength) };
-    for (size_t i{ 0 }; i < k; ++i) 
-    {
-        paddedBits.push_back(0);
-    }
-    for (int i{ 63 }; i >= 0; --i) {
-        paddedBits.push_back((originalLength >> i) & 1);
-    }
-    return paddedBits;
-}
-
 SHA256Encoder::BitsVector SHA256Encoder::getHash(const BitsVector& bits) {
     const auto paddedBits{ getPadded(bits) };
 
@@ -94,6 +77,22 @@ SHA256Encoder::BitsVector SHA256Encoder::getHash(const BitsVector& bits) {
         }
     }
     return hashBits;
+}
+
+SHA256Encoder::BitsVector SHA256Encoder::getPadded(const BitsVector& bits)
+{
+    uint64_t originalLength{ bits.size() };
+    auto paddedBits{ bits };
+    paddedBits.push_back(1);
+    size_t k{ getK(originalLength) };
+    for (size_t i{ 0 }; i < k; ++i)
+    {
+        paddedBits.push_back(0);
+    }
+    for (int i{ 63 }; i >= 0; --i) {
+        paddedBits.push_back((originalLength >> i) & 1);
+    }
+    return paddedBits;
 }
 
 void SHA256Encoder::processChunk(const BitsVector& bitsChunk)

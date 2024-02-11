@@ -102,6 +102,7 @@ void SHA256Encoder::processChunk(const BitsVector& bitsChunk)
 {
     std::array<uint32_t, 64> words{};
 
+    // copy bits chunk into first 16 words
     for (size_t i{ 0 }; i < 16; ++i) {
         words[i] = 0;
         for (int j = 0; j < 32; ++j) {
@@ -109,6 +110,7 @@ void SHA256Encoder::processChunk(const BitsVector& bitsChunk)
         }
     }
 
+	// extend the first 16 words to remaining 48 words
     for (size_t i{ 16 }; i < 64; ++i) {
         uint32_t s0{ rotateRight(words[i - 15], 7) ^ rotateRight(words[i - 15], 18) ^ shiftRight(words[i - 15], 3) };
         uint32_t s1{ rotateRight(words[i - 2], 17) ^ rotateRight(words[i - 2], 19) ^ shiftRight(words[i - 2], 10) };
@@ -124,6 +126,7 @@ void SHA256Encoder::processChunk(const BitsVector& bitsChunk)
     uint32_t g{ hashValues[6] };
     uint32_t h{ hashValues[7] };
 
+	// compress the 64 words into hash values
     for (size_t i{ 0 }; i < 64; ++i) {
         uint32_t S1{ rotateRight(e, 6) ^ rotateRight(e, 11) ^ rotateRight(e, 25) };
         uint32_t ch{ (e & f) ^ ((~e) & g) };

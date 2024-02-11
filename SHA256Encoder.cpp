@@ -100,19 +100,19 @@ SHA256Encoder::BitsVector SHA256Encoder::getPadded(const BitsVector& bits)
 
 void SHA256Encoder::processChunk(const BitsVector& bitsChunk)
 {
-    std::array<uint32_t, 64> w{};
+    std::array<uint32_t, 64> words{};
 
     for (size_t i{ 0 }; i < 16; ++i) {
-        w[i] = 0;
+        words[i] = 0;
         for (int j = 0; j < 32; ++j) {
-            w[i] |= static_cast<uint32_t>(bitsChunk[i * 32 + j]) << (31 - j);
+            words[i] |= static_cast<uint32_t>(bitsChunk[i * 32 + j]) << (31 - j);
         }
     }
 
     for (size_t i{ 16 }; i < 64; ++i) {
-        uint32_t s0{ rotateRight(w[i - 15], 7) ^ rotateRight(w[i - 15], 18) ^ shiftRight(w[i - 15], 3) };
-        uint32_t s1{ rotateRight(w[i - 2], 17) ^ rotateRight(w[i - 2], 19) ^ shiftRight(w[i - 2], 10) };
-        w[i] = w[i - 16] + s0 + w[i - 7] + s1;
+        uint32_t s0{ rotateRight(words[i - 15], 7) ^ rotateRight(words[i - 15], 18) ^ shiftRight(words[i - 15], 3) };
+        uint32_t s1{ rotateRight(words[i - 2], 17) ^ rotateRight(words[i - 2], 19) ^ shiftRight(words[i - 2], 10) };
+        words[i] = words[i - 16] + s0 + words[i - 7] + s1;
     }
 
     uint32_t a{ hashValues[0] };
@@ -127,7 +127,7 @@ void SHA256Encoder::processChunk(const BitsVector& bitsChunk)
     for (size_t i{ 0 }; i < 64; ++i) {
         uint32_t S1{ rotateRight(e, 6) ^ rotateRight(e, 11) ^ rotateRight(e, 25) };
         uint32_t ch{ (e & f) ^ ((~e) & g) };
-        uint32_t temp1{ h + S1 + ch + k[i] + w[i] };
+        uint32_t temp1{ h + S1 + ch + k[i] + words[i] };
         uint32_t S0{ rotateRight(a, 2) ^ rotateRight(a, 13) ^ rotateRight(a, 22) };
         uint32_t maj{ (a & b) ^ (a & c) ^ (b & c) };
         uint32_t temp2{ S0 + maj };

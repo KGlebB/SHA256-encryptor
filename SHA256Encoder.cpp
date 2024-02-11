@@ -79,6 +79,9 @@ SHA256Encoder::BitsVector SHA256Encoder::getHash(const BitsVector& bits) {
     return hashBits;
 }
 
+/* Preprocess. Make message to look like: 
+   <original message of length L> 1 <K zeros> <L as 64 bit integer>,
+   (the number of bits will be a multiple of 512) */
 SHA256Encoder::BitsVector SHA256Encoder::getPadded(const BitsVector& bits)
 {
     uint64_t originalLength{ bits.size() };

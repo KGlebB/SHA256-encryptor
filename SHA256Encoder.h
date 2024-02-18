@@ -7,11 +7,10 @@
 #include <sstream>
 #include <bitset>
 
+using BitsVector = std::vector<bool>;
+
 class SHA256Encoder
 {
-public:
-	using BitsVector = std::vector<bool>;
-
 private:
 	static constexpr size_t HASH_LENGTH{ 8 };
 	static constexpr size_t BLOCK_LENGTH{ 64 };
@@ -23,6 +22,7 @@ public:
 	SHA256Encoder();
 	~SHA256Encoder();
 	std::string encode(const std::string& message);
+	std::bitset<256> encodeToBits(const std::string& message);
 
 private:
 	void initVariables();

@@ -21,9 +21,15 @@
     <ClCompile Include="SHA256Encoder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="dsa.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SHA256Encoder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dsa.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
